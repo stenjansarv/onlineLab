@@ -1,0 +1,11 @@
+.imageContainer {
+  align-self: center;
+  margin-right: 10%;
+}
+
+/* Small screens */
+@media only screen and (max-width: 955px) {
+  .imageContainer {
+      display: none;
+  }
+}
