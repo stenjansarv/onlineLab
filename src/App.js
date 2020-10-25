@@ -1,13 +1,24 @@
 import React from 'react'
+import {BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import './App.css'
-import NavigationBar from './components/NavigationBar'
-import 'bootstrap/dist/css/bootstrap.min.css'
+
+import Home from './Pages/Home'
+import About from './Pages/About'
+import Contact from './Pages/Contact'
+import NotFound from './Pages/NotFound'
 
 function App() {
   return (
-    <div className="App">
-      <NavigationBar />
-    </div>
+    <Router>
+      <div className="App" style={{overflow: 'hidden'}}>
+        <Switch>
+          <Route path="/" component={Home} exact />
+          <Route path="/about" component={About} />
+          <Route path="/contact" component={Contact} />
+          <Route component={NotFound} />
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
