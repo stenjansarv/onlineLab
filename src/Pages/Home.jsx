@@ -2,6 +2,7 @@ import React from "react"
 import "./Home.css"
 
 import Shark from '../assets/Shark.png'
+import Jellyfish from '../assets/Jellyfish.png'
 
 // Components
 import NavigationBar from '../components/NavigationBar'
@@ -17,6 +18,10 @@ const Home = props => {
 
           <HeaderText text='Research Club.' />
           <Image src={Shark} width='500px' />
+        </div>
+        <div className="lastContainer">
+          <HeaderText text='Research Club.' />
+          <Image src={Jellyfish} width='500px' />
         </div>
       </main>
     </div>
