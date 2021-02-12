@@ -7,7 +7,7 @@ const Logo = () => {
 
   useEffect(() => {
     lottie.loadAnimation({
-      container: document.querySelector('.notFound-lottie'),
+      container: document.querySelector('.octopus-lottie'),
       renderer: 'svg',
       loop: true,
       autoplay: true,
@@ -18,8 +18,8 @@ const Logo = () => {
 
   return (
     <div style={{display: 'flex', alignItems: 'center'}} >
-      <div style={{width: '150px', height: '150px'}} className="notFound-lottie" />
-      <h3>Science Group Name</h3>
+      <div style={{width: '150px', height: '150px'}} className="octopus-lottie" />
+      <h3>Francisco Arenas</h3>
     </div>
   );
 }
