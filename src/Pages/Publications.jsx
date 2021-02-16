@@ -29,12 +29,10 @@ const Publications = props => {
   }, [])
 
   const loadData = async () => {
-    console.log('Pog', process.env)
-    const response = await fetch(`https://${FETCH_ALL_PUBLICATIONS_URI}/0000-0001-6925-3805/publications/all`, {
+    const response = await fetch(`https://a2w4mppjnf.execute-api.eu-west-2.amazonaws.com/dev/0000-0001-6925-3805/publications/all`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': PUBLICATIONS_API_KEY,
+        'Content-Type': 'application/json'
       }
     })
 
