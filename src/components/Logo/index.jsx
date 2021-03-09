@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react'
 import lottie from 'lottie-web'
 
 import animationData from './OctopusLogoLottie.json'
@@ -13,13 +13,13 @@ const Logo = () => {
       autoplay: true,
       animationData
     })
-  })
+  }, [])
     
 
   return (
     <div style={{display: 'flex', alignItems: 'center'}} >
       <div style={{width: '150px', height: '150px'}} className="octopus-lottie" />
-      <h3>Francisco Arenas</h3>
+      <h3 style={{color: 'white'}}>Online Laboratory</h3>
     </div>
   );
 }

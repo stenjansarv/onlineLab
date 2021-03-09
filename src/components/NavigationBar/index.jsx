@@ -1,27 +1,67 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Link, useParams } from 'react-router-dom'
+import styled from 'styled-components'
+
 
 import Logo from '../Logo'
 
+const NavItemList = styled.ul`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  list-style: none;
+  width: ${props => props.theme.selectedId !== null ? '40%' : '20%'}
+`
+
+const NavItem = styled.li`
+  color: white;
+`
+
 const NavigationBar = () => {
+  const { orcidId } = useParams()
+  const isAuthenticated = useSelector(state => state.auth.authenticated)
+  const selectedId = useSelector(state => state.auth.selectedId)
+
+  NavItemList.defaultProps = { theme: { selectedId: selectedId } }
 
   return (
-    <nav style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', minHeight: '10vh', color: '#fff', paddingLeft: '5%', paddingRight: '5%'}}>
+    <nav style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#fff', paddingLeft: '5%', paddingRight: '5%'}}>
       <Logo />
-      <ul style={{width: '40%', display: 'flex', justifyContent: 'space-around', alignItems: 'center', listStyle: 'none'}}>
-        <Link style={{color: 'white'}} to='/about'>
-          <li>About</li>
-        </Link>
-        <Link style={{color: 'white'}} to='/contact'>
-          <li>Contact</li>
-        </Link>
-        <Link style={{color: 'white'}} to='/publications'>
-          <li>Publications</li>
-        </Link>
-        <Link style={{color: 'white'}} to='/contact'>
-          <li>Contact</li>
-        </Link>
-      </ul>
+      <NavItemList>
+        {selectedId !== null && (
+        <Link to={`/${orcidId}/about`}>
+          <NavItem>About</NavItem>
+        </Link>)}
+        {selectedId !== null && (
+        <Link to={`/${orcidId}/contact`}>
+          <NavItem>Contact</NavItem>
+        </Link>)}
+        {selectedId !== null && (
+        <Link to={`/${orcidId}/publications`}>
+          <NavItem>Publications</NavItem>
+        </Link>)}
+        {!isAuthenticated && (
+        <Link to='/signin'>
+          <NavItem style={{border: '1px solid rgba(252, 122, 87, 1)', borderRadius: '10px', padding: '10px 20px'}}>Sign In</NavItem>
+        </Link>)}
+        {!isAuthenticated && (
+        <Link to='/signup'>
+          <NavItem style={{border: '1px solid rgba(252, 122, 87, 1)', borderRadius: '10px', padding: '10px 20px', backgroundColor: 'rgba(252, 122, 87, 1)', color: 'rgba(36, 56, 104, 1)'}}>Sign Up</NavItem>
+        </Link>)}
+
+        {/* Have to be authenticated */}
+        {isAuthenticated &&
+          <Link to={`/${orcidId}/profile`}>
+            <NavItem>Profile</NavItem>
+          </Link>
+        }
+        {isAuthenticated &&
+          <Link to='/signout'>
+            <NavItem>Sign Out</NavItem>
+          </Link>
+        }
+      </NavItemList>
     </nav>
   )
 }
