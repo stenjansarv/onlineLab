@@ -22,6 +22,7 @@ const NavigationBar = () => {
   const { orcidId } = useParams()
   const isAuthenticated = useSelector(state => state.auth.authenticated)
   const selectedId = useSelector(state => state.auth.selectedId)
+  const userId = useSelector(state => state.user.details.orcidID)
 
   NavItemList.defaultProps = { theme: { selectedId: selectedId } }
 
@@ -30,15 +31,19 @@ const NavigationBar = () => {
       <Logo />
       <NavItemList>
         {selectedId !== null && (
-        <Link to={`/${orcidId}/about`}>
+        <Link to={`/${orcidId || userId}/home`}>
+          <NavItem>Researcher's Home</NavItem>
+        </Link>)}
+        {selectedId !== null && (
+        <Link to={`/${orcidId || userId}/about`}>
           <NavItem>About</NavItem>
         </Link>)}
         {selectedId !== null && (
-        <Link to={`/${orcidId}/contact`}>
+        <Link to={`/${orcidId || userId}/contact`}>
           <NavItem>Contact</NavItem>
         </Link>)}
         {selectedId !== null && (
-        <Link to={`/${orcidId}/publications`}>
+        <Link to={`/${orcidId || userId}/publications`}>
           <NavItem>Publications</NavItem>
         </Link>)}
         {!isAuthenticated && (
@@ -52,7 +57,7 @@ const NavigationBar = () => {
 
         {/* Have to be authenticated */}
         {isAuthenticated &&
-          <Link to={`/${orcidId}/profile`}>
+          <Link to={`/${userId}/profile`}>
             <NavItem>Profile</NavItem>
           </Link>
         }
