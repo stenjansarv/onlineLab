@@ -1,7 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-// import './index.css' // TODO: Add this back once not using antd anymore
 import 'antd/dist/antd.css'
+import '../node_modules/react-grid-layout/css/styles.css'
+import '../node_modules/react-resizable/css/styles.css'
+import './index.css' // TODO: Add this back once not using antd anymore 
 import App from './App'
 
 // Redux
