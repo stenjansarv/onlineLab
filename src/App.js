@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
+import { get } from 'lodash'
+
 import Amplify from 'aws-amplify'
 import { Auth } from 'aws-amplify'
 import './App.css'
@@ -16,6 +18,8 @@ import SignOut from './Pages/SignOut'
 import Profile from './Pages/Profile'
 
 import { continueSession } from './redux/actions/auth.actions'
+import LoadingScreen from './components/Loading'
+import ResearcherHome from './Pages/ResearcherHome'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -49,22 +53,33 @@ const App = () => {
   }
 
   const isAuthenticated = useSelector(state => state.auth.authenticated)
+  const userOrcidId = useSelector(state => state.user.details.orcidID)
+  const orcidId = useSelector(state => state.router.location.pathname)
   const root = useSelector(state => state)
-  
+
+  const isAuthenticating = useSelector(state => get(state.waiting.list, 'AUTHENTICATING', true))
+
+  if (isAuthenticating) {
+    return (
+      <LoadingScreen />
+    )
+  }
+
   console.log(root)
 
-  if (isAuthenticated) {
+  if (isAuthenticated && userOrcidId === orcidId.split('/')[1]) {
     return (
-      <div className="App" style={{overflow: 'hidden'}}>
+      <div className="App">
         <Switch>
           <Route path="/" component={Home} exact />
-          <Route path="/:orcidId/about" component={About} />
-          <Route path="/:orcidId/contact" component={Contact} />
-          <Route path="/:orcidId/publications" component={Publications} />
 
           {/* Authenticated Exclusive */}
           <Route path="/:orcidId/profile" component={Profile} />
-          <Route path="/signout" component={SignOut} />
+          <Route path="/:orcidId/home" component={ResearcherHome} />
+          <Route path="/:orcidId/about" component={About} />
+          <Route path="/:orcidId/contact" component={Contact} />
+          <Route path="/:orcidId/publications" component={Publications} />
+          {/* <Route path="/signout" component={SignOut} /> */}
 
           {/* Redirections */}
           {/* <Route path="/signup" component={SignUp}><Redirect to="/profile" /> : <Profile /></Route>
@@ -79,6 +94,7 @@ const App = () => {
       <div className="App" style={{overflow: 'hidden'}}>
         <Switch>
           <Route path="/" component={Home} exact />
+          <Route path="/:orcidId/home" component={ResearcherHome} />
           <Route path="/:orcidId/about" component={About} />
           <Route path="/:orcidId/contact" component={Contact} />
           <Route path="/:orcidId/publications" component={Publications} />
