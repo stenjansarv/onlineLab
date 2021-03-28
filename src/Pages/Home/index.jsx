@@ -17,6 +17,7 @@ import Image from '../../components/Image'
 import HeaderText from '../../components/HeaderText'
 
 import { selectResearcher } from '../../redux/actions/auth.actions'
+import { COLORS } from '../../lib/constants/colors'
 
 const Home = props => {
   const dispatch = useDispatch()
@@ -53,7 +54,7 @@ const Home = props => {
 
                 <div className='firstContainer'>
                   <div style={{paddingBottom: '15%'}}>
-                    <h1 className='water-text'>A new way of looking at <span className='special'>research</span></h1>
+                    <h1 className='water-text'>A new way of looking at <span className='special' style={{color: COLORS.SECONDARY_300}}>research</span></h1>
                   </div>
                   <div className='searchBarContainer'>
                     <Input className='searchBar' placeholder='Search researchers by ORCID ID...' onPressEnter={async (e) => {

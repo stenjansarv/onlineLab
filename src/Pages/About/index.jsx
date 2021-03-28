@@ -5,10 +5,10 @@ import styled from 'styled-components'
 import moment from 'moment'
 import { get } from 'lodash'
 
-import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
-import 'react-vertical-timeline-component/style.min.css';
+import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component'
+import 'react-vertical-timeline-component/style.min.css'
 
-import { ExperimentOutlined, BankOutlined } from '@ant-design/icons';
+import { ExperimentOutlined, BankOutlined } from '@ant-design/icons'
 
 // Components
 import NavigationBar from '../../components/NavigationBar'
@@ -62,20 +62,20 @@ const About = () => {
     <Container>
       <NavigationBar />
       <Content>
-      <h1 style={{color: 'white'}}>Education & Employment History</h1>
-      <VerticalTimeline>
-      {employments.concat(educations).sort((a, b) => ((a.start_date ? a.start_date : a.end_date) > (b.start_date ? b.start_date : b.end_date)) ? 1 : -1).map((career, key) => {
-        return (<VerticalTimelineElement
-          contentStyle={{ backgroundColor: '#C4C3E9', color: '#fff'}}
-          contentArrowStyle={{ borderRight: '7px solid #C4C3E9' }}
-          key={key}
-          iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff', display: 'flex', justifyContent: 'center' }}
-          icon={career.education_id ? <ExperimentOutlined /> : <BankOutlined />}
-        >
-          <h4 style={{textAlign: key % 2 === 0 ? 'left' : 'right', fontSize: '20px'}}>{career.start_date ? moment(career.start_date).format("DD MMM YYYY") : moment(career.end_date).format("DD MMM YYYY")}</h4>
-          <h3 className="vertical-timeline-element-title">{career.role_title}</h3>
-          <h4 className="vertical-timeline-element-subtitle">{career.organization_name} ({career.organization_address})</h4>
-        </VerticalTimelineElement>)})}
+        <h1 style={{color: 'white'}}>Education & Employment History</h1>
+        <VerticalTimeline>
+        {employments.concat(educations).sort((a, b) => ((a.start_date ? a.start_date : a.end_date) > (b.start_date ? b.start_date : b.end_date)) ? 1 : -1).map((career, key) => {
+          return (<VerticalTimelineElement
+            contentStyle={{ backgroundColor: '#C4C3E9', color: '#fff'}}
+            contentArrowStyle={{ borderRight: '7px solid #C4C3E9' }}
+            key={key}
+            iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff', display: 'flex'}}
+            icon={career.education_id ? <ExperimentOutlined style={{margin: 'auto', marginBottom: '30%'}}/> : <BankOutlined style={{margin: 'auto', marginBottom: '30%' }} />}
+          >
+            <h4 style={{textAlign: key % 2 === 0 ? 'left' : 'right', fontSize: '20px'}}>{career.start_date ? moment(career.start_date).format("DD MMM YYYY") : moment(career.end_date).format("DD MMM YYYY")}</h4>
+            <h3 className="vertical-timeline-element-title">{career.role_title}</h3>
+            <h4 className="vertical-timeline-element-subtitle">{career.organization_name} ({career.organization_address})</h4>
+          </VerticalTimelineElement>)})}
         </VerticalTimeline>
       </Content>
     </Container>
