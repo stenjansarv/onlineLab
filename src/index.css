@@ -1,13 +1,24 @@
 @font-face {
-  font-family: 'Montserrat';
+  font-family: 'Montserrat-Light';
   src: local('Montserrat'), url(./assets/fonts/Montserrat/Montserrat-Thin.ttf) format('truetype');
+  src: local('Montserrat-Light'), url(./assets/fonts/Montserrat/Montserrat-Light.ttf) format('truetype');
+  src: local('Montserrat-ExtraLight'), url(./assets/fonts/Montserrat/Montserrat-ExtraLight.ttf) format('truetype');
 }
 
 body {
-  margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+body::-webkit-scrollbar {
+  display: none;
+}
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -20,6 +31,11 @@ body, html {
 }
 
 * {
-  color: white;
+  color: black;
   outline: none;
+}
+
+/* Override the react-grid-item css */
+.react-grid-item.react-grid-placeholder {
+  background-color: transparent;
 }
