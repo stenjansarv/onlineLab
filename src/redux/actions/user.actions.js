@@ -1,4 +1,5 @@
 import { waitingState } from '../../lib/action-helpers'
+import fetch from 'node-fetch'
 
 export const updateUser = (userId, body) => async dispatch => {
   try {
@@ -19,8 +20,6 @@ export const updateUser = (userId, body) => async dispatch => {
       })
     }
 
-    console.log('WOT', payload)
-
     return dispatch({ type: 'USER', payload })
   } catch (error) {
     return dispatch({
@@ -29,5 +28,20 @@ export const updateUser = (userId, body) => async dispatch => {
     })
   } finally {
     dispatch(waitingState('UPDATING_USER', false))
+  }
+}
+
+export const logUserOut = () => async dispatch => {
+  try {
+    dispatch(waitingState('LOGGING_USER_OUT', true))
+
+    return dispatch({ type: 'USER_LOGOUT' })
+  } catch (error) {
+    return dispatch({
+      type: 'LOGGING_USER_OUT_FAILURE',
+      payload: error
+    })
+  } finally {
+    dispatch(waitingState('LOGGING_USER_OUT', false))
   }
 }

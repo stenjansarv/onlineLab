@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { Auth } from 'aws-amplify'
 import styled from 'styled-components'
-import ReactFullpage from '@fullpage/react-fullpage'
 
 import { Alert, Form, Button, Input, Tooltip } from 'antd'
-import { EyeInvisibleOutlined, EyeTwoTone, MailOutlined, LockOutlined } from '@ant-design/icons'
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons'
 import NavigationBar from "../../components/NavigationBar"
 import AuthenticationModal from '../../components/AuthenticationModal'
 
@@ -42,47 +40,35 @@ const SignIn = () => {
     else setCredentialError({ error: true, message: payload.message })
   }
 
-  console.log(credentialError)
-
   return (
-    <ReactFullpage
-      scrollingSpeed = {1000} /* Options here */
-      render={({ state, fullpageApi }) => {
-        return (
-          <ReactFullpage.Wrapper>
-            <Container className='section'>
-              <NavigationBar />
-              <Content>
-                <AuthenticationModal>
-                  <h1 style={{color: 'white', fontFamily: 'Montserrat', paddingBottom: '3%'}}>Welcome Back</h1>
-                  { credentialError.error && <Alert
-                    style={{textAlign: 'left', marginBottom: '3%'}}
-                    message='Could not sign in'
-                    showIcon
-                    description={credentialError.message}
-                    type="error"
-                  /> }
-                  <Form form={form} name='signup' onFinish={signIn} style={{width: '60%'}}>
-                    <Form.Item name='email' rules={[{ required: true, type: 'email', message: (<Tooltip visible={true} placement='rightBottom' title='The input is not a valid e-mail address!'/>) }]}>
-                      <Input placeholder="Input email address" prefix={<MailOutlined />} value={email} onChange={e => setEmail(e.target.value)} />
-                    </Form.Item>
-                    <Form.Item name='password' rules={[{ required: true, message: (<Tooltip visible={true} placement='rightBottom' title='Please input a valid password!'/>) }]}>
-                      <Input.Password placeholder="Input password" prefix={<LockOutlined />} iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)} value={password} onChange={e => setPassword(e.target.value)}/>
-                    </Form.Item>
-                    <Form.Item>
-                      <Button type="primary" htmlType="submit" disabled={!form.isFieldsTouched(false) || email === '' || password === '' || form.getFieldsError().filter(({ errors }) => errors.length).length}>
-                        Sign In
-                      </Button>
-                    </Form.Item>
-                  </Form>
-                </AuthenticationModal>
-              </Content>
-            </Container>
-          </ReactFullpage.Wrapper>
-        )
-      }
-    }
-    />
+    <Container>
+      <NavigationBar />
+      <Content>
+        <AuthenticationModal>
+          <h1 style={{color: 'white', fontFamily: 'Montserrat', paddingBottom: '3%'}}>Welcome Back</h1>
+          { credentialError.error && <Alert
+            style={{textAlign: 'left', marginBottom: '3%'}}
+            message='Could not sign in'
+            showIcon
+            description={credentialError.message}
+            type="error"
+          /> }
+          <Form form={form} name='signup' onFinish={signIn} style={{width: '60%'}}>
+            <Form.Item name='email' rules={[{ required: true, type: 'email', message: (<Tooltip visible={true} placement='rightBottom' title='The input is not a valid e-mail address!'/>) }]}>
+              <Input placeholder="Input email address" value={email} onChange={e => setEmail(e.target.value)} />
+            </Form.Item>
+            <Form.Item name='password' rules={[{ required: true, message: (<Tooltip visible={true} placement='rightBottom' title='Please input a valid password!'/>) }]}>
+              <Input.Password style={{margin: 0}} placeholder="Input password" iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)} value={password} onChange={e => setPassword(e.target.value)}/>
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit" disabled={!form.isFieldsTouched(false) || email === '' || password === '' || form.getFieldsError().filter(({ errors }) => errors.length).length}>
+                <p style={{margin: 'auto'}}>Sign In</p>
+              </Button>
+            </Form.Item>
+          </Form>
+        </AuthenticationModal>
+      </Content>
+    </Container>
   )
 }
 

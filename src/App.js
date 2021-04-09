@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 
 import Amplify from 'aws-amplify'
 import { Auth } from 'aws-amplify'
@@ -14,12 +14,11 @@ import Publications from './Pages/Publications'
 import NotFound from './Pages/NotFound'
 import SignIn from './Pages/SignIn'
 import SignUp from './Pages/SignUp'
-import SignOut from './Pages/SignOut'
 import Profile from './Pages/Profile'
 
 import { continueSession } from './redux/actions/auth.actions'
-import LoadingScreen from './components/Loading'
 import ResearcherHome from './Pages/ResearcherHome'
+import LoadingScreen from './components/Loading'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -27,6 +26,9 @@ const App = () => {
   const keepLoggedIn = (email) => dispatch(continueSession(email))
 
   useEffect(() => {
+
+    console.log('Kek', process.env)
+
     Amplify.configure({
       Auth: {
         region: process.env.REACT_APP_REGION,
@@ -42,30 +44,19 @@ const App = () => {
 
   const checkCognitoUserSession = async () => {
     try {
-      // await Auth.currentSession()
       const authedUser = await Auth.currentAuthenticatedUser()
 
-      console.log(authedUser)
       if (authedUser) keepLoggedIn(authedUser.username)
     } catch (e) {
-      // console.error(e)
+      console.error(e)
     }
   }
 
   const isAuthenticated = useSelector(state => state.auth.authenticated)
   const userOrcidId = useSelector(state => state.user.details.orcidID)
   const orcidId = useSelector(state => state.router.location.pathname)
-  const root = useSelector(state => state)
 
-  const isAuthenticating = useSelector(state => get(state.waiting.list, 'AUTHENTICATING', true))
-
-  if (isAuthenticating) {
-    return (
-      <LoadingScreen />
-    )
-  }
-
-  console.log(root)
+  const isAuthenticating = useSelector(state => get(state.waiting.list, 'AUTHENTICATING', false))
 
   if (isAuthenticated && userOrcidId === orcidId.split('/')[1]) {
     return (
@@ -79,17 +70,16 @@ const App = () => {
           <Route path="/:orcidId/about" component={About} />
           <Route path="/:orcidId/contact" component={Contact} />
           <Route path="/:orcidId/publications" component={Publications} />
-          {/* <Route path="/signout" component={SignOut} /> */}
-
-          {/* Redirections */}
-          {/* <Route path="/signup" component={SignUp}><Redirect to="/profile" /> : <Profile /></Route>
-          <Route path="/signin" component={SignIn}><Redirect to="/profile" /> : <Profile /></Route> */}
 
           <Route component={NotFound} />
         </Switch>
       </div>
     )
   } else {
+    if (!isAuthenticated && isAuthenticating) {
+      return <LoadingScreen />
+    }
+
     return (
       <div className="App" style={{overflow: 'hidden'}}>
         <Switch>
@@ -102,7 +92,6 @@ const App = () => {
           {/* UnAuthenticated Exclusive */}
           <Route path="/signup" component={SignUp} />
           <Route path="/signin" component={SignIn} />
-          <Route path="/signout" component={SignOut} />
 
           <Route component={NotFound} />
         </Switch>

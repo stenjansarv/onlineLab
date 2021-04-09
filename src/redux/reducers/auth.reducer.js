@@ -13,6 +13,8 @@ const authenticated = (state = false, action) => {
       return false
     case 'LOGIN_SUCCESS':
       return true
+    case 'SIGNING_OUT_SUCCESS':
+      return false
     case 'CLIENT_ACTIVE_CHANGE':
       if (action.payload !== undefined) {
         return true

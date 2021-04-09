@@ -20,39 +20,90 @@ const ModalContent = styled.div`
   background-color: #fff;
 `
 
-
 const ModalHeader = styled.div`
   padding: 10px;
 `
-const ModalTitle = styled.h4`
+const ModalTitle = styled.h2`
   margin: 0;
+  font-weight: bold;
 `
 const ModalBody = styled.div`
   padding: 10px;
 `
 
 const ModalFooter = styled.div`
+  display: flex;
+  justify-content: space-around;
   padding: 10px;
 `
 
-const Button = styled.button`
+const SaveButton = styled.button`
+  width: 20%;
+  min-height: 40px;
+  background-color: rgb(252, 122, 87);
+  border: none;
+  border-radius: 10px;
+  color: white;
 
+  transition: all 0.5s ease;
+
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0px 3px 15px 0px rgba(252, 122, 87, 0.7);
+  }
 `
 
-const Modal = props => {
-  if (!props.show) return null
+const CloseButton = styled.button`
+  width: 20%;
+  min-height: 40px;
+  background-color: white;
+  border: 1px solid rgb(252, 122, 87);
+  border-radius: 10px;
+  color: rgb(252, 122, 87);
+
+  transition: all 0.5s ease;
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgb(252, 122, 87);
+    color: white;
+  }
+`
+
+const DeleteButton = styled.button`
+  width: 20%;
+  min-height: 40px;
+  background-color: white;
+  border: 1px solid red;
+  border-radius: 10px;
+  color: red;
+
+  transition: all 0.5s ease;
+
+  &:hover {
+    cursor: pointer;
+    background-color: red;
+    color: white;
+    box-shadow: 0px 3px 15px 0px rgba(255, 0, 0, 0.3);
+  }
+`
+
+const Modal = ({ show, title, onSave, onClose, onDelete, showDelete = true, showSave = true, children}) => {
+  if (!show) return null
 
   return (
     <Container>
       <ModalContent>
         <ModalHeader>
-          <ModalTitle>{props.title}</ModalTitle>
+          <ModalTitle>{title}</ModalTitle>
         </ModalHeader>
         <ModalBody>
-          {props.children}
+          {children}
         </ModalBody>
         <ModalFooter>
-          <Button onClick={props.onClose}>Close</Button>
+          {showSave && <SaveButton onClick={onSave}>Save Changes</SaveButton> }
+          <CloseButton onClick={onClose}>Close</CloseButton>
+          {showDelete && <DeleteButton onClick={onDelete}>Delete this document</DeleteButton>}
         </ModalFooter>
       </ModalContent>
     </Container>

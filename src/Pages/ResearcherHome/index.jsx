@@ -10,18 +10,19 @@ import LoadingScreen from '../../components/Loading'
 
 // Actions
 import { selectResearcher } from '../../redux/actions/auth.actions'
+import { getVisitorUser } from '../../redux/actions/visitor.actions'
 import ResearcherHomeGrid from './ResearcherHomeGrid'
-import Card from '../../components/Card'
 
 // Styles
 const Container = styled.div`
-  background: rgb(0,3,22);
+  // background: rgb(0,3,22);
+  background: radial-gradient(farthest-side ellipse at 10% 0,#333867 20%,#17193b);
   display: flex;
   flex-direction: column;
-  height: 100vh;
-`
-const Content = styled.div`
-  align-items: center;
+  min-height: 100vh;
+  height: 100%;
+
+  overflow: hidden;
 `
 
 const ResearcherHome = () => {
@@ -30,15 +31,19 @@ const ResearcherHome = () => {
   const { orcidId } = useParams()
 
   const user = useSelector(state => state.user.details)
+  const visitor = useSelector(state => state.visitor.details)
   const isUserLoading = useSelector(state => get(state.waiting.list, 'AUTHENTICATING'))
+  const isVisitorLoading = useSelector(state => get(state.waiting.list, 'FETCHING_VIEWING_USER'))
 
-  const setResearcher = (orcidId) => dispatch(selectResearcher(orcidId))
+  const setResearcher = (publisherId) => dispatch(selectResearcher(publisherId))
+  const fetchVisitorUser = (publisherId) => dispatch(getVisitorUser(publisherId))
 
   useEffect(() => {
     setResearcher(orcidId)
+    fetchVisitorUser(orcidId)
   }, [])
 
-  if (isUserLoading) {
+  if (isUserLoading || isVisitorLoading) {
     return (
       <LoadingScreen />
     )
@@ -47,9 +52,9 @@ const ResearcherHome = () => {
   return (
     <Container>
       <NavigationBar />
-      <Content>
-        <ResearcherHomeGrid columns={10} isResizable={false} dashboard={user.dashboard} />
-      </Content>
+        {visitor.dashboard ? (visitor.dashboard && <ResearcherHomeGrid columns={10} isResizable={false} dashboard={visitor.dashboard || user.dashboard} team={visitor.groupMembers}/>)
+        : <div style={{height: '100%', width: '100%', margin: 'auto'}}><h1 style={{color: 'white'}}>This researcher has not yet set up their Homepage on this platform</h1></div>
+        }
     </Container>
   )
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import classnames from 'classnames'
 import styled from 'styled-components'
 import { SearchOutlined } from '@ant-design/icons'
-import { Input, Button, Select, Form } from 'antd'
+import { Button, Select } from 'antd'
 
 
 const Container = styled.div`
@@ -26,16 +26,14 @@ const IconContainer = styled.div`
   padding: 10px;
 `
 
-const SearchBar = ({color = '#ffffff', onSearch, query, setQuery}) => {
+const SearchBar = ({color = '#ffffff', onSearch, query, setQuery, disabled = false}) => {
   return (
     <Container color={color}>
       <IconContainer>
-        <SearchOutlined style={{fontSize: '25px', color: 'black'}}/>
+        <SearchOutlined style={{fontSize: '25px' }}/>
       </IconContainer>
-      {/* <Select style={{height: '1%', width: '35%'}} dropdownStyle={{display: 'none'}} autoFocus mode='tags' placeholder='Search for publications...' onChange={updateQueryTerms}/>    */}
-      
-      <Select defaultValue={query} onChange={(values) => setQuery(values)} allowClear size='large' dropdownStyle={{display: 'none'}} bordered={false} autoFocus mode='tags' placeholder='Search for publications...' style={{boxShadow: 'none', width: '100%', alignSelf: 'center'}}/>
-      <Button onClick={onSearch} style={{justifySelf: 'flex-end', alignSelf: 'center', height: '90%', marginRight: '5px', backgroundColor: 'rgb(252, 122, 87)', border: 'none', borderRadius: '5px', color: 'rgba(36,56,104,1)'}}>Find it now</Button>
+      <Select defaultValue={query} onChange={(values) => setQuery(values)} size='large' dropdownStyle={{display: 'none'}} bordered={false} autoFocus mode='tags' placeholder='Search for publications...' style={{boxShadow: 'none', width: '100%', alignSelf: 'center'}}/>
+      <Button disabled={disabled} onClick={onSearch} style={{justifySelf: 'flex-end', alignSelf: 'center', height: '90%', marginRight: '5px', backgroundColor: disabled ? 'lightgray' : 'rgb(252, 122, 87)', border: 'none', borderRadius: '5px'}}><p style={{margin: 'auto', color: disabled ? 'gray' : 'rgba(36,56,104,1)'}}>Find it now</p></Button>
     </Container>
   )
 }

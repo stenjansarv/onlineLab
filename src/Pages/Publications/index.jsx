@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { get } from 'lodash'
 import moment from 'moment'
-import { Select, Form, Button } from 'antd'
+import { Switch } from 'antd'
 
 // Components
 import NavigationBar from '../../components/NavigationBar'
@@ -13,12 +13,15 @@ import SearchBar from '../../components/SearchBar'
 
 import { fetchPublications, queryPublications } from '../../redux/actions/publications.actions'
 import { selectResearcher } from '../../redux/actions/auth.actions'
+import { getVisitorUser } from '../../redux/actions/visitor.actions'
 import LoadingScreen from '../../components/Loading'
 
 const Container = styled.div`
   background: radial-gradient(farthest-side ellipse at 10% 0,#333867 20%,#17193b);
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+  height: 100%;
 `
 
 const Content = styled.div`
@@ -34,25 +37,28 @@ const Cards = styled.div`
 `
 
 const Publications = () => {
-  const [form] = Form.useForm()
   const dispatch = useDispatch()
 
   const { orcidId } = useParams()
 
   // MapStateToProps
   const publications = useSelector(state => state.publications.list)
+  const isImporting = useSelector(state => state.visitor.details.importing)
   const isLoadingPublications = useSelector(state => get(state.waiting.list, 'PUBLICATIONS', true))
 
   // Actions
   const loadPublications = (publisherId) => dispatch(fetchPublications(publisherId))
   const loadQueriedPublications = (publisherId, queryTerms) => dispatch(queryPublications(publisherId, queryTerms))
   const setResearcher = (orcidId) => dispatch(selectResearcher(orcidId))
+  const fetchVisitor = (orcidId) => dispatch(getVisitorUser(orcidId))
 
   const [query, setQuery] = useState([])
+  const [smallMode, setSmallMode] = useState(false)
 
   useEffect(() => {
     loadPublications(orcidId)
     setResearcher(orcidId)
+    fetchVisitor(orcidId)
   }, [])
 
   if (isLoadingPublications) {
@@ -60,34 +66,23 @@ const Publications = () => {
       <LoadingScreen />
     )
   }
-  
-  const updateQueryTerms = (terms) => {
-    form.setFieldsValue({ query: terms })
-  }
 
   const onSearch = () => {
-    // loadQueriedPublications('0000-0001-6925-3805', query) // Enable this once querying by keywords is active again
+    loadQueriedPublications(orcidId, query) // Enable this once querying by keywords is active again
   }
 
   return (
     <Container>
       <NavigationBar />
       <Content>
-        <div style={{display: 'flex', justifyContent: 'center', marginBottom: '3%', backgorundColor: 'red'}}>
-          <SearchBar onSearch={onSearch} query={query} setQuery={setQuery}/>
+        {isImporting && <div style={{display: 'flex', justifyContent: 'center', marginBottom: '3%'}}>
+          <SearchBar onSearch={onSearch} query={query} setQuery={setQuery} disabled={!isImporting}/>
+        </div>}
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <h1 style={{color: 'white', marginLeft: 'auto'}}>{publications.length} publications found</h1>
+          <Switch style={{marginLeft: 'auto', marginRight: '2%'}} large checkedChildren="Small Mode" unCheckedChildren="Large Mode" onChange={() => setSmallMode(!smallMode)} defaultChecked={smallMode} />
         </div>
-        {/* <Form form={form} name='search' onFinish={onFinish} initialValues={{ query: form.getFieldsValue(true)['query'] }}>
-          <Form.Item name='query'>
-            <Select style={{height: '1%', width: '35%'}} dropdownStyle={{display: 'none'}} autoFocus mode='tags' placeholder='Search for publications...' onChange={updateQueryTerms}/>   
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" loading={isLoadingPublications}>
-              Submit
-            </Button>
-          </Form.Item>
-        </Form> */}
-        <h1 style={{color: 'white'}}>{publications.length} publications found</h1>
-        <Cards>
+        {publications.length > 0 && <Cards>
           {publications.map((publication, key) => {
             const title = publication.title
             const subtitle = publication.subtitle
@@ -96,9 +91,9 @@ const Publications = () => {
             const type = publication.type
             const journal = publication.journal_title
 
-            return <Card key={key} title={title} subtitle={subtitle} journal={journal} year={year} link={link} type={type}/>
+            return <Card key={key} title={title} subtitle={subtitle} journal={journal} year={year} link={link} type={type} smallMode={smallMode}/>
           })}
-        </Cards>
+        </Cards>}
       </Content>
     </Container>
   )

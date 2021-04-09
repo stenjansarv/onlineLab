@@ -1,8 +1,18 @@
 import React from 'react'
 import RGL, { WidthProvider } from 'react-grid-layout'
 import _ from 'lodash'
+import styled from 'styled-components'
 
-const ReactGridLayout = WidthProvider(RGL);
+import Blog from '../../../components/Blog'
+import TwitterFeed from '../../../components/TwitterFeed'
+import ContactForm from '../../../components/ContactForm'
+import GroupMembers from '../../../components/GroupMembers'
+
+const ReactGridLayout = WidthProvider(RGL)
+
+const Container = styled.div`
+  padding: 0 2%;
+`
 
 export default class ResearcherHomeGrid extends React.PureComponent {
   static defaultProps = {
@@ -34,18 +44,42 @@ export default class ResearcherHomeGrid extends React.PureComponent {
       l.static = true
       l.isResizable = false
       l.y -= 2
+      l.h = 20
       if (l.y < 0) l.y = 0
+      if (l.i === 'blog') l.h = 20
+      if (l.i === 'group') l.h = 9
+      if (l.i === 'contact') l.h = 10
+
+      // if (l.i === 'blog') return (
+      //   <Blog item={l.i} key={l.i} data-grid={l} />
+      // )
+
+      // if (l.i === 'twitter') return (
+      //   <TwitterFeed item={l.i} key={l.i} data-grid={l} />
+      // )
+
+      // if (l.i === 'group') return (
+      //   <GroupMembers item={l.i} key={l.i} data-grid={l} team={this.props.team} />
+      // )
+
+      // if (l.i === 'contact') return (
+      //   <ContactForm item={l.i} key={l.i} data-grid={l} />
+      // )
+
       return (
-        <div key={l.i} data-grid={l} style={{backgroundColor: 'white', border: '1px solid black', display: 'flex', alignItems: 'center', justifyContent: 'center'}}></div>
+        <div key={l.i} data-grid={l}>
+          {l.i === 'blog' && <Blog />}
+          {l.i === 'twitter' && <TwitterFeed />}
+          {l.i === 'group' && <GroupMembers team={this.props.team}/>}
+          {l.i === 'contact' && <ContactForm />}
+        </div>
       )
     })
   }
 
-
   render() {
     return (
-      <div>
-        {/* <button onClick={this.resetLayout}>Reset Layout</button> */}
+      <Container style={{padding: '0 2%'}}>
         <ReactGridLayout
           {...this.props}
           layout={this.state.layout}
@@ -58,7 +92,7 @@ export default class ResearcherHomeGrid extends React.PureComponent {
         >
           {this.generateDOM()}
         </ReactGridLayout>
-      </div>
+      </Container>
     );
   }
 }

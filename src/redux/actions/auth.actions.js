@@ -110,6 +110,22 @@ export const confirmRegistrationCode = (email, code, publisherId) => async dispa
   }
 }
 
+export const signOut = () => async dispatch => {
+  try {
+    dispatch(waitingState('SIGNING_OUT', true))
+    await Auth.signOut()
+
+    return dispatch({ type: 'SIGNING_OUT_SUCCESS' })
+  } catch (error) {
+    return dispatch({
+      type: 'SIGNING_OUT_FAILURE',
+      payload: error
+    })
+  } finally {
+    dispatch(waitingState('SIGNING_OUT', false))
+  }
+}
+
 export const selectResearcher = (orcidId) => async dispatch => {
   try {
     dispatch(waitingState('SELECTING_RESEARCHER', true))

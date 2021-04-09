@@ -31,7 +31,8 @@ body, html {
 }
 
 * {
-  color: black;
+  /* color: black; */
+  box-sizing: border-box;
   outline: none;
 }
 

@@ -4,6 +4,8 @@ const details = (state = {}, action) => {
   switch (action.type) {
     case 'USER':
       return action.payload
+    case 'USER_LOGOUT':
+      return {}
     default:
       return state
   }

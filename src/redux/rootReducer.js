@@ -7,6 +7,8 @@ import educations from './reducers/educations.reducer'
 import auth from './reducers/auth.reducer'
 import waiting from './reducers/waiting.reducer'
 import user from './reducers/user.reducer'
+import blog from './reducers/blog.reducer'
+import visitor from './reducers/visitor.reducer'
 
 export default (history) => combineReducers({
   router: connectRouter(history),
@@ -15,5 +17,7 @@ export default (history) => combineReducers({
   educations,
   auth,
   user,
+  visitor,
+  blog,
   waiting
 })

@@ -16,7 +16,7 @@ export const COLORS = {
 
   SECONDARY_100: '#fdb09b',
   SECONDARY_200: '#fda187',
-  SECONDARY_300: 'rgb(252, 122, 87)',
+  SECONDARY_300: '#FC7A57',
 
   SUCCESS: '#e5f9ee',
   SUCCESS_100: '#9ee493',
