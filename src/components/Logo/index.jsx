@@ -1,9 +1,46 @@
 import React, { useEffect } from 'react'
 import lottie from 'lottie-web'
+import styled from 'styled-components'
 
 import animationData from './LogoLottie-Dark.json'
+import { device } from '../../lib/constants/devices'
 
-const Logo = ({ text = true }) => {
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const TitleText = styled.h3`
+  color: white;
+  margin-bottom: 0;
+  
+
+  @media only screen and ${device.tablet} {
+    display: none;
+  }
+`
+
+const SubText = styled.p`
+  color: white;
+  font-size: 0.75em;
+  margin-top: 0;
+
+  @media only screen and ${device.tablet} {
+    display: none;
+  }
+`
+
+const LottieContainer = styled.div`
+  width: 150px;
+  height: 150px;
+
+  @media only screen and ${device.tablet} {
+    width: 125px;
+    height: 125px;
+  }
+`
+
+const Logo = ({ text = true, activeId, home = false }) => {
 
   useEffect(() => {
     lottie.loadAnimation({
@@ -17,11 +54,14 @@ const Logo = ({ text = true }) => {
     
 
   return (
-    <div style={{display: 'flex', alignItems: 'center'}} >
-      <div style={{width: '150px', height: '150px'}} className="lottie" />
-      {text && <h3 style={{color: 'white'}}>{'O N L I N E L A B O R A T O R Y'}</h3>}
-    </div>
-  );
+    <Container>
+      <LottieContainer className='lottie' />
+      {text && <div>
+        <div style={{display: 'flex'}}><TitleText>{'O N L I N E'}</TitleText><TitleText style={{marginLeft: '15px'}}>{'L A B O R A T O R Y'}</TitleText></div>
+        {!home && <div style={{display: 'flex'}}><SubText>Currently viewing - {activeId}</SubText></div>}
+      </div>}
+    </Container>
+  )
 }
 
 export default Logo
