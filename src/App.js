@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
-import { get, isEmpty } from 'lodash'
+import { get } from 'lodash'
 
 import Amplify from 'aws-amplify'
 import { Auth } from 'aws-amplify'
@@ -9,7 +9,6 @@ import './App.css'
 
 import Home from './Pages/Home'
 import About from './Pages/About'
-import Contact from './Pages/Contact'
 import Publications from './Pages/Publications'
 import NotFound from './Pages/NotFound'
 import SignIn from './Pages/SignIn'
@@ -26,9 +25,6 @@ const App = () => {
   const keepLoggedIn = (email) => dispatch(continueSession(email))
 
   useEffect(() => {
-
-    console.log('Kek', process.env)
-
     Amplify.configure({
       Auth: {
         region: process.env.REACT_APP_REGION,
@@ -68,7 +64,6 @@ const App = () => {
           <Route path="/:orcidId/profile" component={Profile} />
           <Route path="/:orcidId/home" component={ResearcherHome} />
           <Route path="/:orcidId/about" component={About} />
-          <Route path="/:orcidId/contact" component={Contact} />
           <Route path="/:orcidId/publications" component={Publications} />
 
           <Route component={NotFound} />
@@ -86,7 +81,6 @@ const App = () => {
           <Route path="/" component={Home} exact />
           <Route path="/:orcidId/home" component={ResearcherHome} />
           <Route path="/:orcidId/about" component={About} />
-          <Route path="/:orcidId/contact" component={Contact} />
           <Route path="/:orcidId/publications" component={Publications} />
 
           {/* UnAuthenticated Exclusive */}
