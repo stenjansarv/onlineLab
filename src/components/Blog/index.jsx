@@ -5,6 +5,7 @@ import { get } from 'lodash'
 import styled from 'styled-components'
 
 import BlogItem from './BlogItem'
+import { device } from '../../lib/constants/devices'
 
 import { getBlogPosts } from '../../redux/actions/blog.actions'
 
@@ -18,6 +19,11 @@ const Container = styled.div`
 
   width: 100%;
   height: 100%;
+
+  @media only screen and ${device.tablet} {
+    flex-direction: column;
+    align-items: center;
+  }
 `
 
 const CloseButton = styled.button`
