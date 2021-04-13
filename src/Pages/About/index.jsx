@@ -5,10 +5,9 @@ import styled from 'styled-components'
 import moment from 'moment'
 import { get } from 'lodash'
 
+import { ExperimentOutlined, BankOutlined } from '@ant-design/icons'
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component'
 import 'react-vertical-timeline-component/style.min.css'
-
-import { ExperimentOutlined, BankOutlined } from '@ant-design/icons'
 
 // Components
 import NavigationBar from '../../components/NavigationBar'

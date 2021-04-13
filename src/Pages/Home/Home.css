@@ -1,14 +1,10 @@
 .home-1 {
   background: url('../../assets/BG-3.jpg');
-  /* background: url('../assets/video-1.mp4'); */
-
-  /* background: rgb(0,3,22); */
-  /* background: linear-gradient(0deg, rgba(0,3,22,1) 0%, rgba(36,56,104,1) 100%); */
 
   overscroll-behavior-y: none;
 
-  /* width: 100vw; */
-  /* height: 6680px; */
+  font-family: 'Montserrat', sans-serif;
+
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -32,120 +28,11 @@
   z-index: 10000;
 }
 
-.home-2 {
-  /* background: rgba(0,3,22,1); */
-  /* background: url('../assets/abstract-1.jpg'); */
-  background-color: #010302;
-
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-
-  padding: 0;
-  margin: 0;
-
-  display: flex;
-  flex-direction: column;
-}
-
 main {
-  /* Size is relative to the root element (root has font-size of 16px aka 5rem * 16px = 80px) */
   display: flex;
   padding: 0;
   margin: 0;
 
-  /* Make the entire website - navbar into main */
   width: 100%;
   height: 100%;
-}
-
-.firstContainer {
-  display: flex;
-  flex: 2;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-items: center;
-  width: 100%;
-  padding-left: 20%;
-  padding-top: 3%;
-}
-
-.lastContainer {
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  width: 100%;
-  /* border: 3px solid black; */
-}
-
-.searchBarContainer {
-  width: 70%;
-  align-self: flex-start;
-}
-.searchBar {
-  padding-left: 5%;
-  padding-right: 5%;
-  
-  border-radius: 50px;
-  font-size: x-large;
-
-  font-family: 'Montserrat';
-}
-
-.water-text {
-  /* background-image: url(https://alvarotrigo.com/fullPage/extensions/imgs/cards/vectors-2-3.svg); */
-    /* background-size: cover;
-    -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
-    -moz-background-clip: text;
-    background-clip: text; 
-    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
-    color: lightgray;
-    width: 60%;
-    font-size: 5em;
-    /* font-weight: 300; */
-    font-family: 'Montserrat', sans-serif;
-    padding:0;
-    margin:0;
-    text-align: left;
-}
-
-span.special {
-  font-weight: bold;
-}
-
-#videoBG {
-  position: fixed;
-  z-index: -1;
-  right: 0;
-  bottom: 0;
-  min-width: 100%;
-  min-height: 100%;
-}
-
-@media (min-aspect-ratio: 16/9) {
-  #videoBG {
-    width: 100%;
-    height: auto;
-  }
-}
-
-@media (max-aspect-ratio: 16/9) {
-  #videoBG {
-    width: auto;
-    height: 100%;
-  }
-}
-
-@media (max-width: 767px) {
-  #videoBG {
-    display: none;
-  }
-
-  .home-2 {
-    background: url('../../assets/poster.png');
-    background-size: cover;
-  }
 }

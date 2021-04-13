@@ -1,8 +1,8 @@
 import React from 'react'
 import RGL, { WidthProvider } from 'react-grid-layout'
 
-const ReactGridLayout = WidthProvider(RGL);
-const originalLayout = getFromLS("layout") || []
+const ReactGridLayout = WidthProvider(RGL)
+const originalLayout = getFromLS('layout') || []
 
 export default class LocalStorageLayout extends React.PureComponent {
   static defaultProps = {
@@ -38,7 +38,6 @@ export default class LocalStorageLayout extends React.PureComponent {
   render() {
     return (
       <div>
-        {/* <button onClick={this.resetLayout}>Reset Layout</button> */}
         <ReactGridLayout
           {...this.props}
           layout={this.state.layout}
@@ -55,14 +54,14 @@ export default class LocalStorageLayout extends React.PureComponent {
 }
 
 function getFromLS(key) {
-  let ls = {};
+  let ls = {}
   if (global.localStorage) {
     try {
       ls = JSON.parse(global.localStorage.getItem('rgl-profile')) || {}
     } catch (e) {
     }
   }
-  return ls[key];
+  return ls[key]
 }
 
 function saveToLS(key, value) {

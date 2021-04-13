@@ -50,22 +50,6 @@ export default class ResearcherHomeGrid extends React.PureComponent {
       if (l.i === 'group') l.h = 9
       if (l.i === 'contact') l.h = 10
 
-      // if (l.i === 'blog') return (
-      //   <Blog item={l.i} key={l.i} data-grid={l} />
-      // )
-
-      // if (l.i === 'twitter') return (
-      //   <TwitterFeed item={l.i} key={l.i} data-grid={l} />
-      // )
-
-      // if (l.i === 'group') return (
-      //   <GroupMembers item={l.i} key={l.i} data-grid={l} team={this.props.team} />
-      // )
-
-      // if (l.i === 'contact') return (
-      //   <ContactForm item={l.i} key={l.i} data-grid={l} />
-      // )
-
       return (
         <div key={l.i} data-grid={l}>
           {l.i === 'blog' && <Blog />}

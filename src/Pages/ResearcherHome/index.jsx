@@ -15,7 +15,6 @@ import ResearcherHomeGrid from './ResearcherHomeGrid'
 
 // Styles
 const Container = styled.div`
-  // background: rgb(0,3,22);
   background: radial-gradient(farthest-side ellipse at 10% 0,#333867 20%,#17193b);
   display: flex;
   flex-direction: column;

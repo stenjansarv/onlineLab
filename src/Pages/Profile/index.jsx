@@ -38,7 +38,7 @@ const Container = styled.div`
   height: 100%;
   min-height: 100vh;
 
-  font-family: 'Montserrat';
+  font-family: 'Montserrat', sans-serif;
 `
 
 const Left = styled.div`
@@ -152,7 +152,6 @@ const Card = styled.div`
 `
 
 const ProfileImage = styled.div`
-  // display: inline-block;
   width: ${props => props.size || '125px'};
   height: ${props => props.size || '125px'};
   border-radius: 50%;
@@ -247,8 +246,6 @@ const ProfileFormInput = styled(Input)`
   border-radius: 5px;
   background-color: #fbfbfb;
   text-align: center;
-  // color: transparent;
-  // text-shadow: 0 0 0 #2196f3;
 
   &:hover {
     border: 1px solid #f7f7f7;
@@ -269,8 +266,6 @@ const BlogPostTextForm = styled(TextArea)`
   background-color: #fbfbfb;
   text-align: center;
   max-height: 600px;
-  // color: transparent;
-  // text-shadow: 0 0 0 #2196f3;
 
   &:hover {
     border: 1px solid #f7f7f7;
@@ -461,12 +456,17 @@ const Profile = () => {
   }, {
     loading: () => userLoading,
     checked: () => user.importing,
-    text: 'Import your data from ORCID',
+    text: 'Enable importing from ORCID',
     url: ``
   }, {
     loading: () => isLoadingBlogPosts,
     checked: () => blogPosts.length > 0,
     text: 'Write your first blog post',
+    url: ``
+  }, {
+    loading: () => userLoading,
+    checked: () => group.groupMembers.length > 1,
+    text: 'Add your first research group member',
     url: ``
   }]
 
@@ -487,9 +487,6 @@ const Profile = () => {
     />
   }
 
-  const root = useSelector(state => state)
-  console.log(root)
-  
   const clearPublicationValues = () => {
     setPublicationTitle(null)
     setPublicationJournalTitle(null)
@@ -583,7 +580,6 @@ const Profile = () => {
         <div style={{alignSelf: 'center'}}>
           <Logo text={false}/>
         </div>
-        {/* <h1 style={{color: 'red', margin: '20px 0'}}>LOGO</h1> */}
         <NavBarItem onClick={() => setProfilePage(1)}><span></span><p>Dashboard</p></NavBarItem>
         <NavBarItem onClick={() => setProfilePage(2)}><span></span><p>Publications</p></NavBarItem>
         <NavBarItem onClick={() => setProfilePage(3)}><span></span><p>Employments & Educations</p></NavBarItem>
