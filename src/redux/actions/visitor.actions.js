@@ -21,8 +21,6 @@ export const getVisitorUser = (userId) => async dispatch => {
       groupMembers: unfilteredPayload.group.enabled && unfilteredPayload.group.groupMembers
     }
 
-    console.log(payload)
-
     return dispatch({ type: 'VIEWING_USER', payload })
   } catch (error) {
     return dispatch({
@@ -54,5 +52,20 @@ export const getTwitterFeed = (twitterHandle) => async dispatch => {
     })
   } finally {
     dispatch(waitingState('FETCHING_USER_TWITTER_FEED', false))
+  }
+}
+
+export const clearVisitorData = () => async dispatch => {
+  try {
+    dispatch(waitingState('CLEAR_VISITOR_DATA', true))
+
+    return dispatch({ type: 'CLEAR_VIEWING_USER' })
+  } catch (error) {
+    return dispatch({
+      type: 'CLEAR_VISITOR_DATA_FAILURE',
+      payload: error
+    })
+  } finally {
+    dispatch(waitingState('CLEAR_VISITOR_DATA', false))
   }
 }

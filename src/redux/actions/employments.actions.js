@@ -1,13 +1,17 @@
 import { waitingState } from '../../lib/action-helpers'
 import fetch from 'node-fetch'
 
+const { REACT_APP_PUBLISHER_SERVICE_API_KEY } = process.env
+
 export const fetchEmployments = (publisherId) => async dispatch => {
   const waitingKey = 'EMPLOYMENTS'
   try {
     dispatch(waitingState(waitingKey, true))
     const response = await fetch(`https://fcyr6ir38i.execute-api.eu-west-2.amazonaws.com/dev/${publisherId}/employments/all`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json'
+      }
     })
 
     const payload = await response.json()
@@ -32,7 +36,10 @@ export const uploadEmployments = (publisherId) => async dispatch => {
     dispatch(waitingState(waitingKey, true))
     const response = await fetch(`https://fcyr6ir38i.execute-api.eu-west-2.amazonaws.com/dev/${publisherId}/employments`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-api-key': REACT_APP_PUBLISHER_SERVICE_API_KEY
+      }
     })
 
     const payload = await response.json()
@@ -57,7 +64,10 @@ export const updateEmployment = (publisherId, employmentId, body) => async dispa
     dispatch(waitingState(waitingKey, true))
     await fetch(`https://fcyr6ir38i.execute-api.eu-west-2.amazonaws.com/dev/${publisherId}/employments/${employmentId}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-api-key': REACT_APP_PUBLISHER_SERVICE_API_KEY
+      },
       body: JSON.stringify(body)
     })
 
@@ -77,7 +87,10 @@ export const deleteEmployment = (publisherId, employmentId) => async dispatch =>
     dispatch(waitingState(waitingKey, true))
     await fetch(`https://fcyr6ir38i.execute-api.eu-west-2.amazonaws.com/dev/${publisherId}/employments/${employmentId}`, {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-api-key': REACT_APP_PUBLISHER_SERVICE_API_KEY
+      }
     })
 
   } catch (error) {
@@ -96,7 +109,10 @@ export const unloadEmployments = (publisherId) => async dispatch => {
     dispatch(waitingState(waitingKey, true))
     await fetch(`https://fcyr6ir38i.execute-api.eu-west-2.amazonaws.com/dev/${publisherId}/employments`, {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-api-key': REACT_APP_PUBLISHER_SERVICE_API_KEY
+      }
     })
 
   } catch (error) {
