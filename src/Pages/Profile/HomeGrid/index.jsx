@@ -75,7 +75,7 @@ class ToolBox extends React.Component {
   render() {
     return (
       <div style={{display: 'flex', width: '100%'}}>
-      <div style={{display: 'flex', flexDirection: 'column', height: '150px', width: '80%', border: '2px solid black'}}>
+      <div style={{display: 'flex', flexDirection: 'column', height: '150px', width: '80%'}}>
         <span style={{marginTop: '5px'}}>Toolbox</span>
         <div style={{height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start'}}>
           {this.props.items.map(item => (

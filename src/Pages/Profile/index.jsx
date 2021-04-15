@@ -20,7 +20,7 @@ import LocalStorageLayout from '../../components/GridLayout'
 import HomeGrid from './HomeGrid'
 import Logo from '../../components/Logo'
 
-import { fetchPublications, updatePublication, deletePublication, uploadPublications, unloadPublications } from '../../redux/actions/publications.actions'
+import { fetchPublications, updatePublication, deletePublication, uploadPublications, unloadPublications, createBrandNewPublication } from '../../redux/actions/publications.actions'
 import { fetchEmployments, updateEmployment, deleteEmployment, uploadEmployments, unloadEmployments } from '../../redux/actions/employments.actions'
 import { fetchEducations, updateEducation, deleteEducation, uploadEducations, unloadEducations } from '../../redux/actions/educations.actions'
 import { updateUser } from '../../redux/actions/user.actions'
@@ -367,6 +367,26 @@ const BlogPostItem = styled.div`
   }
 `
 
+const ProfileFormDescription = styled.textarea`
+  box-shadow: none;
+  border: 1px solid #EBEBEB;
+  border-radius: 5px;
+  background-color: #fbfbfb;
+  text-align: center;
+  resize: none;
+
+  &:hover {
+    border: 1px solid #f7f7f7;
+    box-shadow: 0px 3px 10px 0px #d6d6d6;
+  }
+  
+  &:focus {
+    border: 1px solid #f7f7f7;
+    box-shadow: 0px 5px 20px 0px #d6d6d6;
+    background-color: white;
+  }
+`
+
 const Profile = () => {
   const dispatch = useDispatch()
 
@@ -405,6 +425,7 @@ const Profile = () => {
   const removeEducations = (publisherId) => dispatch(unloadEducations(publisherId))
   const addEmployments = (publisherId) => dispatch(uploadEmployments(publisherId))
   const removeEmployments = (publisherId) => dispatch(unloadEmployments(publisherId))
+  const createPublication = (publisherId, body) => dispatch(createBrandNewPublication(publisherId, body))
 
   const loadBlogPosts = (publisherId) => dispatch(getBlogPosts(publisherId))
   const createBlogPost = (publisherId, body) => dispatch(createNewBlogPost(publisherId, body))
@@ -420,22 +441,30 @@ const Profile = () => {
   const [currentCareersPage, setCurrentCareersPage] = useState(1)
   const [careersPerPage, setCareersPerPage] = useState(10)
   const [openCareer, setOpenCareer] = useState(null)
-
+  
   const [openBlogPost, setOpenBlogPost] = useState(null)
   const [newBlogModalOpen, setNewBlogModalOpen] = useState(false)
-
+  
   const [groupMembers, setGroupMembers] = useState(user.group.groupMembers)
+
+  const [createNewPublication, setCreateNewPublication] = useState(null)
 
   // User Info
   const [fullName, setFullName] = useState(null)
   const [twitterHandle, setTwitterHandle] = useState(null)
   const [location, setLocation] = useState(null)
+  const [description, setDescription] = useState(null)
   const [importing, setImporting] = useState(isImporting)
   const [addMember, setAddMember] = useState(null)
 
   const [publicationTitle, setPublicationTitle] = useState(null)
   const [publicationJournalTitle, setPublicationJournalTitle] = useState(null)
   const [publicationLink, setPublicationLink] = useState(null)
+
+  const [newPublicationTitle, setNewPublicationTitle] = useState(null)
+  const [newPublicationType, setNewPublicationType] = useState(null)
+  const [newPublicationJournalTitle, setNewPublicationJournalTitle] = useState(null)
+  const [newPublicationLink, setNewPublicationLink] = useState(null)
 
   const [educationRoleTitle, setEducationRoleTitle] = useState(null)
   const [educationOrgName, setEducationOrgName] = useState(null)
@@ -491,6 +520,13 @@ const Profile = () => {
     setPublicationTitle(null)
     setPublicationJournalTitle(null)
     setPublicationLink(null)
+  }
+
+  const clearNewPublicationValues = () => {
+    setNewPublicationTitle(null)
+    setNewPublicationType(null)
+    setNewPublicationJournalTitle(null)
+    setNewPublicationLink(null)
   }
 
   const clearCareerValues = () => {
@@ -585,13 +621,36 @@ const Profile = () => {
         <NavBarItem onClick={() => setProfilePage(3)}><span></span><p>Employments & Educations</p></NavBarItem>
         <NavBarItem onClick={() => setProfilePage(4)}><span></span><p>Manage Homepage</p></NavBarItem>
         <NavBarItem onClick={() => setProfilePage(5)}><span></span><p>Manage the Blog</p></NavBarItem>
-
       </Left>
+
+      <Modal show={!isNil(createNewPublication)} 
+        showDelete={false}
+        onClose={() => {setCreateNewPublication(null); clearNewPublicationValues()}} 
+        onSave={() => {createPublication(user.orcidID, omitBy({ title: newPublicationTitle, type: newPublicationType, journal_title: newPublicationJournalTitle, url: newPublicationLink }, isNull)); setCreateNewPublication(null); clearPublicationValues(); message.success('You have successfully created a new publication')}} title='Create a new publication'>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '40px', textAlign: 'left'}}>
+          <p style={{margin: 0}}>Title</p>
+          <ProfileFormInput onChange={(e) => setNewPublicationTitle(e.target.value)} placeholder={'Add your publication\'s title'} value={newPublicationTitle}/>
+        </div> 
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '40px', textAlign: 'left'}}>
+          <p style={{margin: 0}}>Type</p>
+          <ProfileFormInput onChange={(e) => setNewPublicationType(e.target.value)} placeholder={'Add your publication\'s type'} value={newPublicationType}/>
+        </div>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '40px', textAlign: 'left'}}>
+          <p style={{margin: 0}}>Journal Title</p>
+          <ProfileFormInput onChange={(e) => setNewPublicationJournalTitle(e.target.value)} placeholder={'Add your publication\'s journal title'} value={newPublicationJournalTitle}/>
+        </div>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '40px', textAlign: 'left'}}>
+          <p style={{margin: 0}}>Link to the Publication</p>
+          <ProfileFormInput onChange={(e) => setNewPublicationLink(e.target.value)} placeholder={'Add your the link to your publication'} value={newPublicationLink}/>
+        </div>
+      </Modal>
+
       <Right style={{width: '100%'}}>
         <VerticalNavBar />
         <ContentContainer>
         <TitleHeader>
           <PageTitle>{getPageTitle(profilePage)}</PageTitle>
+          {(profilePage === 2 || profilePage === 3) && <AddGroupMember style={{marginLeft: 'auto', fontSize: '2rem'}} onClick={() => profilePage === 2 ? setCreateNewPublication(true) : null}>+</AddGroupMember>}
         </TitleHeader>
           {profilePage === 1 && (
     <Content>
@@ -627,12 +686,16 @@ const Profile = () => {
               </div>
             </div>
           </div>
+          <div>
+            <p style={{margin: 0}}>Description of you and/or your work</p>
+            <ProfileFormDescription setDescription type='text' name='message' cols='40' rows='8' onChange={(e) => setDescription(e.target.value)} placeholder={user.description || 'Description'} />
+          </div>
           <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10px', marginBottom: '30px'}}>
             <p style={{marginBottom: '10px'}}>Importing is {importing ? 'enabled' : 'disabled'}</p>
             <Switch defaultChecked={importing} onChange={(e) => { saveUserChanges(user.orcidID, { importing: e }); setImporting(e); if (e) { addPublications(user.orcidID); addEducations(user.orcidID); addEmployments(user.orcidID); } else { removePublications(user.orcidID); removeEducations(user.orcidID); removeEmployments(user.orcidID); }}} />
           </div>
 
-          <SaveButton onClick={() => saveUserChanges(user.orcidID, omitBy({ twitterHandle, fullName, location }, isNull))}>Save Changes</SaveButton>
+          <SaveButton onClick={() => { saveUserChanges(user.orcidID, omitBy({ twitterHandle, fullName, location, description }, isNull)); message.success('You have successfully updated your information') }}>Save Changes</SaveButton>
         </Card>
       {group.enabled ? (
       <LocalStorageLayout columns={10} isResizable={false}>
@@ -660,7 +723,7 @@ const Profile = () => {
           )
         })}
       </LocalStorageLayout>) : (
-        <p>Please enable group</p>
+        <p>Please enable groups</p>
       )}
       </BlockTwo>
       <BlockThree>
@@ -685,7 +748,7 @@ const Profile = () => {
         <ItemProperty flex={4} color='lightgray'>Last Edit</ItemProperty>
         <ItemProperty flex={1} color='lightgray'></ItemProperty>
 
-        <Modal show={!isNil(openPublication)} onClose={() => {setOpenPublication(null); clearPublicationValues()}} itemId={get(openPublication, 'publication_id')} onSave={() => {savePublicationChanges(user.orcidID, get(openPublication, 'publication_id'), omitBy({ title: publicationTitle, journal_title: publicationJournalTitle, url: publicationLink }, isNull)); setOpenPublication(null); clearPublicationValues()}} onDelete={() => {removePublication(user.orcidID, get(openPublication, 'publication_id')); setOpenPublication(null); clearPublicationValues()}} title={get(openPublication, 'publication_id')}>
+        <Modal show={!isNil(openPublication)} onClose={() => {setOpenPublication(null); clearPublicationValues()}} itemId={get(openPublication, 'publication_id')} onSave={() => {savePublicationChanges(user.orcidID, get(openPublication, 'publication_id'), omitBy({ title: publicationTitle, journal_title: publicationJournalTitle, url: publicationLink }, isNull)); setOpenPublication(null); clearPublicationValues(); message.success('You have successfully updated this item')}} onDelete={() => {removePublication(user.orcidID, get(openPublication, 'publication_id')); setOpenPublication(null); clearPublicationValues(); message.success('You have successfully deleted this item')}} title={get(openPublication, 'publication_id')}>
           <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '40px', textAlign: 'left'}}>
             <p style={{margin: 0}}>Title</p>
             <ProfileFormInput onChange={(e) => setPublicationTitle(e.target.value)} placeholder={get(openPublication, 'title') || ''} value={publicationTitle}/>

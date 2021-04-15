@@ -19,6 +19,7 @@ const Layer = styled.div`
   background: #C4C3E9; //lightmode - EAF2EF
   display: flex;
   flex-direction: column;
+  border-radius: 10px;
 
   justify-content: center;
   align-items: center;

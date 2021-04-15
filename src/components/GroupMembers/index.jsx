@@ -46,7 +46,7 @@ const TwitterFeed = ({ team }) => {
   return (
     <Container>
       <Header>Research Team</Header>
-      {team.map((member, index) =>
+      {(team && team.length > 1) && team.map((member, index) =>
         <Cards>
           <MemberCard href={`https://orcid.org/${member.orcidID}`}>
             <p style={{margin: 'auto', color: 'black', fontWeight: 'bolder'}}>{member.name}</p>

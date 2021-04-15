@@ -43,6 +43,8 @@ const selectedId = (state = null, action) => {
   switch (action.type) {
     case 'RESEARCHER_SELECTED':
       return action.payload
+    case 'RESEARCHER_DESELECTED':
+      return null
     default:
       return state
   }

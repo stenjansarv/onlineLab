@@ -13,7 +13,6 @@ import HomeLogo from '../Logo'
 
 import { signOut } from '../../redux/actions/auth.actions'
 import { logUserOut } from '../../redux/actions/user.actions'
-import { clearVisitorData } from '../../redux/actions/visitor.actions'
 
 const Header = styled.div`
   display: flex;
@@ -173,7 +172,6 @@ const NavigationBar = ({ home }) => {
 
   const signUserOut = () => dispatch(signOut())
   const removeUserData = () => dispatch(logUserOut())
-  const removeVisitorData = () => dispatch(clearVisitorData())
 
   const [click, setClick] = useState(false)
   const handleClick = () => setClick(!click)
@@ -184,7 +182,7 @@ const NavigationBar = ({ home }) => {
       <LogoNav>
         <LogoContainer>
           <Link to={`/`} >
-            <HomeLogo onClick={() => removeVisitorData()} activeId={orcidId || userId} home={home} />
+            <HomeLogo activeId={orcidId || userId} home={home} />
           </Link>
         </LogoContainer>
 

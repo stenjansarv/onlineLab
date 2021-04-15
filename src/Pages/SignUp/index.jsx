@@ -58,13 +58,13 @@ const SignUp = () => {
   const confirmSignUp = async (e) => {
     const { payload } = await confirmSignUpCode(email, code, orcidID)
 
-    // TODO: Need to recheck this, since we're returning a different payload now.
     if (payload.name) {
       setCodeError({ error: true, message: payload.message})
       return
     }
 
-    history.push('/publications')
+    history.push('/')
+    window.location.reload()
   }
 
   const resendCode = () => {
@@ -133,15 +133,15 @@ const SignUp = () => {
                   type="error"
                 />}
               <Form.Item name='code'>
-                <Input placeholder="Enter confirmation code" value={code} onChange={e => setCode(e.target.value)} />
+                <Input placeholder="Enter confirmation code" value={code} onChange={e => setCode(e.target.value)} style={{margin: 0}} />
               </Form.Item>
               <Form.Item>
-                <Button type="primary" htmlType="submit" disabled={code === ''}>
+                <Button type="primary" htmlType="submit" disabled={code === ''} style={{margin: 0}}>
                   Confirm Sign Up
                 </Button>
               </Form.Item>
               <Form.Item>
-                <Button type="primary" onClick={resendCode}>
+                <Button type="primary" onClick={resendCode} style={{margin: 0}}>
                   Resend Code
                 </Button>
               </Form.Item>

@@ -15,12 +15,12 @@ const twitter = (state = {}, action) => {
   switch (action.type) {
     case 'TWITTER_FEED':
       return action.payload
+    case 'CLEAR_VIEWING_USER':
+      return {}
     default:
       return state
   }
 }
-
-
 
 export default combineReducers({
   details,

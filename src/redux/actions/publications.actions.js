@@ -31,6 +31,35 @@ export const uploadPublications = (publisherId) => async dispatch => {
   }
 }
 
+export const createBrandNewPublication = (publisherId, body) => async dispatch => {
+  const waitingKey = 'CREATING_NEW_PUBLICATION'
+  try {
+    dispatch(waitingState(waitingKey, true))
+    const response = await fetch(`https://fcyr6ir38i.execute-api.eu-west-2.amazonaws.com/dev/${publisherId}/publications`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'x-api-key': REACT_APP_PUBLISHER_SERVICE_API_KEY
+      },
+      body: JSON.stringify(body)
+    })
+
+    const payload = await response.json()
+
+    return dispatch({
+      type: 'NEW_PUBLICATION',
+      payload
+    })
+  } catch (error) {
+    return dispatch({
+      type: 'FETCH_ERROR',
+      payload: error
+    })
+  } finally {
+    dispatch(waitingState(waitingKey, false))
+  }
+}
+
 export const updatePublication = (publisherId, publicationId, body) => async dispatch => {
   const waitingKey = 'UPDATING_PUBLICATION'
   try {

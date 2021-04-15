@@ -1,9 +1,13 @@
 import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import lottie from 'lottie-web'
 import styled from 'styled-components'
 
 import animationData from './LogoLottie-Dark.json'
 import { device } from '../../lib/constants/devices'
+
+import { deSelectResearcher } from '../../redux/actions/auth.actions'
+import { clearVisitorData } from '../../redux/actions/visitor.actions'
 
 const Container = styled.div`
   display: flex;
@@ -41,6 +45,10 @@ const LottieContainer = styled.div`
 `
 
 const Logo = ({ text = true, activeId, home = false }) => {
+  const dispatch = useDispatch()
+
+  const removeVisitorData = () => dispatch(clearVisitorData())
+  const removeSelectedId = () => dispatch(deSelectResearcher())
 
   useEffect(() => {
     lottie.loadAnimation({
@@ -54,7 +62,7 @@ const Logo = ({ text = true, activeId, home = false }) => {
     
 
   return (
-    <Container>
+    <Container onClick={() => { removeVisitorData(); removeSelectedId(); }}>
       <LottieContainer className='lottie' />
       {text && <div>
         <div style={{display: 'flex'}}><TitleText>{'O N L I N E'}</TitleText><TitleText style={{marginLeft: '15px'}}>{'L A B O R A T O R Y'}</TitleText></div>

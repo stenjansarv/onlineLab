@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 import emailjs from 'emailjs-com'
+import { message } from 'antd'
 
 const Container = styled.div`
   display: flex;
@@ -100,11 +101,14 @@ const ContactForm = () => {
     document.getElementById('contact-me-form').appendChild(researcherNameInput)
 
     await emailjs.sendForm('online-lab-smtp-server', 'template_rbs6rqp', document.getElementById('contact-me-form'), process.env.REACT_APP_EMAIL_USER_ID)
+
+    message.success(`You have successfully sent the mail to ${researcherName}`)
+    document.getElementById('contact-me-from').reset()
   }
   
   return (
     <Container>
-      <Header>Contact the Researcher</Header>
+      <Header>Contact {researcherName || 'the researcher'}</Header>
       <form style={{display: 'flex', flexDirection: 'column', width: '70%'}} className="contact-form" id='contact-me-form' onSubmit={sendEmail}>
         <label style={{marginTop: '5px'}}>From Name</label>
         <ProfileFormInput type="text" name="from_name" />

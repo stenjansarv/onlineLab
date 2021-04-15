@@ -83,7 +83,7 @@ export const requestRegistrationCode = (email, password) => async dispatch => {
 export const confirmRegistrationCode = (email, code, publisherId) => async dispatch => {
   try {
     dispatch(waitingState('REGISTER', true))
-    const data = await Auth.confirmSignUp(email, code)
+    await Auth.confirmSignUp(email, code)
 
     const response = await fetch(`https://4ad7v0upre.execute-api.eu-west-2.amazonaws.com/dev/user/${publisherId}/register?email=${email}`, {
       method: 'POST',
@@ -141,161 +141,17 @@ export const selectResearcher = (orcidId) => async dispatch => {
   }
 }
 
-// export const attachMarketplace = token => async dispatch => {
-//   try {
-//     dispatch(waitingState('MARKETPLACE', true))
-//     await apiFetch(`/api/v1/auth/marketplace`, {
-//       method: 'POST',
-//       body: JSON.stringify({ token }),
-//       headers: new global.Headers({ 'Content-Type': 'application/json' }),
-//       credentials: 'include'
-//     })
-//     return dispatch({
-//       type: 'MARKETPLACE_ATTACHED',
-//       payload: token
-//     })
-//   } catch (error) {
-//     return dispatch({
-//       type: 'FETCH_ERROR',
-//       payload: error
-//     })
-//   } finally {
-//     dispatch(waitingState('MARKETPLACE', false))
-//   }
-// }
+export const deSelectResearcher = () => async dispatch => {
+  try {
+    dispatch(waitingState('DESELECTING_RESEARCHER', true))
 
-// export const logout = () => async dispatch => {
-//   try {
-//     dispatch(waitingState('LOGOUT', true))
-//     await apiFetch(`/api/v1/auth/logout`, {
-//       method: 'GET',
-//       headers: new global.Headers({ 'Content-Type': 'application/json' }),
-//       credentials: 'include'
-//     })
-
-//     return dispatch({
-//       type: 'USER_LOGOUT'
-//     })
-//   } catch (error) {
-//     return dispatch({
-//       type: 'FETCH_ERROR',
-//       payload: error
-//     })
-//   } finally {
-//     dispatch(waitingState('LOGOUT', false))
-//   }
-// }
-
-// export const forgotPassword = email => async dispatch => {
-//   try {
-//     dispatch(waitingState('FORGOT_PASSWORD', true))
-//     const { data } = await apiFetch(`/api/v1/auth/password/forgot`, {
-//       method: 'POST',
-//       headers: new global.Headers({ 'Content-Type': 'application/json' }),
-//       body: JSON.stringify({
-//         email
-//       }),
-//       credentials: 'include'
-//     })
-//     return dispatch({
-//       type: 'FORGOT_PASSWORD_SENT',
-//       payload: data
-//     })
-//   } catch (error) {
-//     return dispatch({
-//       type: 'FETCH_ERROR',
-//       payload: error
-//     })
-//   } finally {
-//     dispatch(waitingState('FORGOT_PASSWORD', false))
-//   }
-// }
-
-// export const resetPassword = body => async dispatch => {
-//   try {
-//     dispatch(waitingState('RESET_PASSWORD', true))
-//     const { data } = await apiFetch(`/api/v1/auth/password/reset`, {
-//       method: 'POST',
-//       headers: new global.Headers({ 'Content-Type': 'application/json' }),
-//       body: JSON.stringify(body),
-//       credentials: 'include'
-//     })
-//     return dispatch({
-//       type: 'USER_PASSWORD_CHANGE',
-//       payload: data
-//     })
-//   } catch (error) {
-//     return dispatch({
-//       type: 'FETCH_ERROR',
-//       payload: error
-//     })
-//   } finally {
-//     dispatch(waitingState('RESET_PASSWORD', false))
-//   }
-// }
-
-// export const updatePassword = (current, newPassword) => async dispatch => {
-//   try {
-//     dispatch(waitingState('USER_PASSWORD', true))
-//     const { data } = await apiFetch(`/api/v1/auth/password/change`, {
-//       method: 'POST',
-//       headers: new global.Headers({ 'Content-Type': 'application/json' }),
-//       body: JSON.stringify({
-//         current,
-//         password: newPassword
-//       }),
-//       credentials: 'include'
-//     })
-//     return dispatch({
-//       type: 'USER_PASSWORD_CHANGE',
-//       payload: data
-//     })
-//   } catch (error) {
-//     return dispatch({
-//       type: 'FETCH_ERROR',
-//       payload: error
-//     })
-//   } finally {
-//     dispatch(waitingState('USER_PASSWORD', false))
-//   }
-// }
-
-// export const acceptInvite = body => async dispatch => {
-//   try {
-//     dispatch(waitingState('USER_CLIENT', true))
-//     await apiFetch(`/api/v1/auth/invite`, {
-//       method: 'POST',
-//       body: JSON.stringify(body),
-//       headers: new global.Headers({ 'Content-Type': 'application/json' }),
-//       credentials: 'include'
-//     })
-//   } catch (error) {
-//     return dispatch({
-//       type: 'FETCH_ERROR',
-//       payload: error
-//     })
-//   } finally {
-//     dispatch(waitingState('USER_CLIENT', false))
-//   }
-// }
-
-// export const changeClient = client => async dispatch => {
-//   try {
-//     dispatch(waitingState('USER_CLIENT', true))
-//     await apiFetch(`/api/v1/auth/client`, {
-//       method: 'PUT',
-//       body: JSON.stringify({
-//         guid: client.guid
-//       }),
-//       headers: new global.Headers({ 'Content-Type': 'application/json' }),
-//       credentials: 'include'
-//     })
-//   } catch (error) {
-//     return dispatch({
-//       type: 'FETCH_ERROR',
-//       payload: error
-//     })
-//   } finally {
-//     dispatch(waitingState('USER_CLIENT', false))
-//   }
-// }
+    return dispatch({ type: 'RESEARCHER_DESELECTED'  })
+  } catch (error) {
+    return dispatch({
+      type: 'DESELECTING_RESEARCHER_FAILED',
+      payload: error
+    })
+  } finally {
+    dispatch(waitingState('DESELECTING_RESEARCHER', false))
+  }
+}
