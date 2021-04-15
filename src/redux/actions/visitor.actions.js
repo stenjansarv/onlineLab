@@ -18,6 +18,7 @@ export const getVisitorUser = (userId) => async dispatch => {
       name: unfilteredPayload.fullName,
       importing: unfilteredPayload.importing,
       email: unfilteredPayload.email,
+      description: unfilteredPayload.description,
       groupMembers: unfilteredPayload.group.enabled && unfilteredPayload.group.groupMembers
     }
 

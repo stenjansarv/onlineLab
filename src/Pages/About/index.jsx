@@ -17,6 +17,7 @@ import LoadingScreen from '../../components/Loading'
 import { fetchEmployments } from '../../redux/actions/employments.actions'
 import { fetchEducations } from '../../redux/actions/educations.actions'
 import { selectResearcher } from '../../redux/actions/auth.actions'
+import { getVisitorUser } from '../../redux/actions/visitor.actions'
 
 // Styles
 const Container = styled.div`
@@ -42,31 +43,33 @@ const About = () => {
   const educations = useSelector(state => state.educations.list)
   const user = useSelector(state => state.user.details)
   const visitor = useSelector(state => state.visitor.details)
-  const isLoadingUser = useSelector(state => get(state.waiting.list, 'AUTHENTICATING', true))
   const isLoadingEmployments = useSelector(state => get(state.waiting.list, 'EMPLOYMENTS', true))
   const isLoadingEducations = useSelector(state => get(state.waiting.list, 'EDUCATIONS', true))
-
+  
   // Actions
   const loadEmployments = (publisherId) => dispatch(fetchEmployments(publisherId))
   const loadEducations = (publisherId) => dispatch(fetchEducations(publisherId))
   const setResearcher = (orcidId) => dispatch(selectResearcher(orcidId))
+  const setVisitorUser = (orcidId) => dispatch(getVisitorUser(orcidId))
 
   useEffect(() => {
     loadEmployments(orcidId)
     loadEducations(orcidId)
     setResearcher(orcidId)
+    setVisitorUser(orcidId)
   }, [])
 
-  if (isLoadingEmployments || isLoadingEducations || isLoadingUser) {
+  if (isLoadingEmployments || isLoadingEducations) {
     return <LoadingScreen />
   }
   
+  console.log(visitor)
   return (
     <Container>
       <NavigationBar />
       <Content>
-        {((user.fullName && isNil(selectedId)) || visitor.name) && <h1 style={{color: 'white'}}>About {user.fullName || visitor.name}</h1>}
-        {((user.description && isNil(selectedId)) || visitor.description) && <p style={{color: 'white', marginTop: '20px', marginBottom: '100px'}}>{user.description || visitor.description}</p>}
+        {((user.fullName && isNil(selectedId)) || (user.orcidID === selectedId) || visitor.name) && <h1 style={{color: 'white'}}>About {user.fullName || visitor.name}</h1>}
+        {((user.description && isNil(selectedId)) || (user.orcidID === selectedId) || visitor.description) && <p style={{color: 'white', marginTop: '20px', marginBottom: '100px'}}>{user.description || visitor.description}</p>}
         {employments.concat(educations).length > 0 ? <h1 style={{color: 'white'}}>Education & Employment History</h1> : null}
         {employments.concat(educations).length > 0 ? <VerticalTimeline>
         {employments.concat(educations).sort((a, b) => ((a.start_date ? a.start_date : a.end_date) > (b.start_date ? b.start_date : b.end_date)) ? 1 : -1).map((career, key) => {

@@ -53,7 +53,6 @@ const App = () => {
   const orcidId = useSelector(state => state.router.location.pathname)
 
   const isAuthenticating = useSelector(state => get(state.waiting.list, 'AUTHENTICATING', false))
-
   if (isAuthenticated && userOrcidId === orcidId.split('/')[1]) {
     return (
       <div className="App">
